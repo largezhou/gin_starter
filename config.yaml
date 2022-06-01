@@ -3,3 +3,7 @@ app:
   port: ${APP_PORT:8080}
   env: ${APP_ENV:production}
   debug: ${APP_DEBUG:false}
+
+log:
+  level: ${LOG_LEVEL:info}
+  stdout: ${LOG_STDOUT:false}

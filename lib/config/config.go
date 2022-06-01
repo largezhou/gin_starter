@@ -1,4 +1,4 @@
-package viper
+package config
 
 import (
 	"bytes"
@@ -8,9 +8,34 @@ import (
 	"regexp"
 )
 
-func init() {
-	fmt.Println("viper init start")
+type config struct {
+	App app // 应用基础配置
+	Log log // 日志配置
+}
 
+type app struct {
+	Host  string // 监听 IP
+	Port  string // 监听 端口
+	Env   string // 环境
+	Debug bool   // 是否开启 debug
+}
+
+type log struct {
+	Level  string // 日志级别
+	Stdout bool   // 是否同时输出到终端
+}
+
+var Config config
+
+func init() {
+	initViper()
+
+	if err := viper.Unmarshal(&Config); err != nil {
+		panic(err)
+	}
+}
+
+func initViper() {
 	viper.AutomaticEnv()
 	viper.SetConfigFile(".env")
 	_ = viper.ReadInConfig()
@@ -26,8 +51,6 @@ func init() {
 	if err := viper.ReadConfig(bytes.NewBuffer(configBytes)); err != nil {
 		panic(err)
 	}
-
-	fmt.Println("viper init end")
 }
 
 // 处理 yaml 配置中的环境变量和默认值
