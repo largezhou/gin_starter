@@ -16,22 +16,21 @@ import (
 )
 
 var c = config.Config.App
+var r *gin.Engine
 
 func main() {
 	defer helper.CallShutdownFunc()
 
-	if c.Debug {
-		logger.Debug("debug 模式运行")
-		gin.SetMode(gin.DebugMode)
-	} else {
-		gin.SetMode(gin.ReleaseMode)
-	}
+	r = InitServer()
 
-	r := gin.Default()
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "pong",
 		})
+	})
+
+	r.GET("/panic", func(c *gin.Context) {
+		panic("造成恐慌")
 	})
 
 	srv := &http.Server{

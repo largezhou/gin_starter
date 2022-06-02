@@ -40,7 +40,6 @@ func init() {
 	Logger = zap.New(
 		zapcore.NewTee(cores...),
 		zap.AddCaller(),
-		zap.AddStacktrace(zapcore.DebugLevel),
 	)
 
 	helper.RegisterShutdownFunc(func() {
