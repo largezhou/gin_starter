@@ -8,24 +8,29 @@ import (
 	"regexp"
 )
 
-type config struct {
-	App app // 应用基础配置
-	Log log // 日志配置
+var Config struct {
+	App struct { // 应用基础配置
+		Host      string  // 监听 IP
+		Port      string  // 监听 端口
+		Env       string  // 环境
+		Debug     bool    // 是否开启 debug
+		Timezone  string  // 时区
+		Key       string  // 加密密钥
+		DistRange float64 // 定位范围
+	}
+	Log struct { // 日志配置
+		Level  string // 日志级别
+		Stdout bool   // 是否同时输出到终端
+	}
+	Mysql struct { // mysql 配置
+		Dsn string // 连接
+	}
+	Redis struct { // redis 配置
+		Host     string
+		Password string
+		Db       int
+	}
 }
-
-type app struct {
-	Host  string // 监听 IP
-	Port  string // 监听 端口
-	Env   string // 环境
-	Debug bool   // 是否开启 debug
-}
-
-type log struct {
-	Level  string // 日志级别
-	Stdout bool   // 是否同时输出到终端
-}
-
-var Config config
 
 func init() {
 	initViper()
