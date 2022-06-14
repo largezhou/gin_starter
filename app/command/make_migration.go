@@ -1,4 +1,4 @@
-package commands
+package command
 
 import (
 	"errors"
@@ -41,7 +41,7 @@ func NewMakeMigrationCommand() *cli.Command {
 			}()
 
 			var stubFile *os.File
-			stubFile, err = os.Open("./app/commands/stub/make_migration.stub")
+			stubFile, err = os.Open("./app/command/stub/make_migration.stub")
 			if err != nil {
 				return writeError()
 			}

@@ -1,4 +1,4 @@
-package commands
+package command
 
 import (
 	"github.com/largezhou/gin_starter/app/init_ctx"

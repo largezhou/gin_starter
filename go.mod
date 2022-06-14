@@ -8,6 +8,7 @@ require (
 	github.com/go-redis/redis/v8 v8.11.6-0.20220405070650-99c79f7041fc
 	github.com/google/uuid v1.3.0
 	github.com/natefinch/lumberjack v2.0.0+incompatible
+	github.com/robfig/cron/v3 v3.0.1
 	github.com/spf13/viper v1.11.0
 	github.com/urfave/cli/v2 v2.8.1
 	go.uber.org/zap v1.21.0

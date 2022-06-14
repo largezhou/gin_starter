@@ -20,7 +20,7 @@ func (w bodyLogWriter) Write(b []byte) (int, error) {
 	return w.ResponseWriter.Write(b)
 }
 
-// Logger 记录请求，添加 requestId
+// Logger 记录请求
 func Logger() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		start := time.Now()

@@ -84,18 +84,18 @@ func createEncodeConfig() zapcore.EncoderConfig {
 	}
 }
 
-func getRequestId(ctx context.Context) string {
-	if requestId, ok := ctx.Value(app_const.RequestIdKey).(string); ok {
-		return requestId
+func getTraceId(ctx context.Context) string {
+	if traceId, ok := ctx.Value(app_const.TraceIdKey).(string); ok {
+		return traceId
 	} else {
 		return ""
 	}
 }
 
 func getFields(ctx context.Context, fields []zap.Field) []zap.Field {
-	requestId := getRequestId(ctx)
-	if requestId != "" {
-		return append(fields, zap.String(app_const.RequestIdKey, requestId))
+	traceId := getTraceId(ctx)
+	if traceId != "" {
+		return append(fields, zap.String(app_const.TraceIdKey, traceId))
 	}
 	return fields
 }

@@ -1,7 +1,10 @@
 package helper
 
 import (
+	"context"
 	"errors"
+	"github.com/google/uuid"
+	"github.com/largezhou/gin_starter/app/app_const"
 	"github.com/largezhou/gin_starter/app/app_error"
 	"github.com/largezhou/gin_starter/app/config"
 	"gorm.io/gorm"
@@ -21,4 +24,9 @@ func ModelNotFound(err error, msg string) error {
 	} else {
 		return err
 	}
+}
+
+// NewTraceIdContext 返回一个新的带链路追踪 ID 的 context
+func NewTraceIdContext() context.Context {
+	return context.WithValue(context.Background(), app_const.TraceIdKey, uuid.NewString())
 }

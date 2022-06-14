@@ -4,11 +4,12 @@ import (
 	"context"
 	"github.com/gin-gonic/gin"
 	"github.com/largezhou/gin_starter/app/app_const"
-	"github.com/largezhou/gin_starter/app/commands"
+	"github.com/largezhou/gin_starter/app/command"
 	"github.com/largezhou/gin_starter/app/config"
 	"github.com/largezhou/gin_starter/app/init_ctx"
 	"github.com/largezhou/gin_starter/app/logger"
 	"github.com/largezhou/gin_starter/app/middleware"
+	cronPkg "github.com/robfig/cron/v3"
 	"github.com/urfave/cli/v2"
 	"go.uber.org/zap"
 	"net/http"
@@ -18,8 +19,10 @@ import (
 	"time"
 )
 
+var cfg = config.Config.App
 var Engine *gin.Engine
 var Console *cli.App
+var Cron *cronPkg.Cron
 
 // Args 去掉 命令行 cli 标识参数后的 运行参数
 var Args []string
@@ -28,9 +31,22 @@ func init() {
 	ctx := init_ctx.Ctx
 	Engine = initServer(ctx)
 	Console = &cli.App{
-		Commands: commands.Commands,
+		Commands: command.Commands,
 	}
 	Args = initArgs(ctx)
+
+	loc, err := time.LoadLocation(cfg.Timezone)
+	if err != nil {
+		panic(err)
+	}
+	Cron = cronPkg.New(
+		cronPkg.WithSeconds(),
+		cronPkg.WithLocation(loc),
+		cronPkg.WithChain(
+			cronPkg.Recover(&CronLogger{}),
+		),
+		cronPkg.WithLogger(&CronLogger{}),
+	)
 }
 
 func RunInConsole(ctx context.Context) bool {
@@ -53,7 +69,7 @@ func initServer(ctx context.Context) *gin.Engine {
 
 	r := gin.New()
 	r.MaxMultipartMemory = 10 << 20
-	r.Use(middleware.SetRequestId(), middleware.Logger())
+	r.Use(middleware.SetTraceId(), middleware.Logger())
 
 	return r
 }
@@ -79,18 +95,22 @@ func Run(ctx context.Context) {
 }
 
 func runServer(ctx context.Context) {
-	c := config.Config.App
 	srv := &http.Server{
-		Addr:    c.Host + ":" + c.Port,
+		Addr:    cfg.Host + ":" + cfg.Port,
 		Handler: Engine,
 	}
 
 	go func() {
-		logger.Info(ctx, "开始运行", zap.String("host", c.Host), zap.String("port", c.Port))
+		logger.Info(ctx, "开始运行", zap.String("host", cfg.Host), zap.String("port", cfg.Port))
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			panic(err)
 		}
 	}()
+
+	if cfg.Cron {
+		Cron.Start()
+		defer Cron.Stop()
+	}
 
 	quit := make(chan os.Signal)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)

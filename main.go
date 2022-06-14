@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/largezhou/gin_starter/app"
 	"github.com/largezhou/gin_starter/app/api"
+	_ "github.com/largezhou/gin_starter/app/cron"
 	"github.com/largezhou/gin_starter/app/init_ctx"
 	"github.com/largezhou/gin_starter/app/shutdown"
 )
