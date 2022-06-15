@@ -7,7 +7,8 @@ package cron
 // )
 
 func init() {
-	// _, _ = app.Cron.AddJob("*/5 * * * * ?", app.CronJob(func(ctx context.Context) {
+	// _, _ = app.Cron.AddFunc("* * * * * ?", func() {
+	// 	ctx := helper.NewTraceIdContext()
 	// 	logger.Debug(ctx, "cron")
-	// }))
+	// })
 }
