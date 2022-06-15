@@ -2,6 +2,7 @@ package model
 
 import (
 	"context"
+	"github.com/largezhou/gin_starter/app/app_const"
 	"github.com/largezhou/gin_starter/app/config"
 	"github.com/largezhou/gin_starter/app/logger"
 	"go.uber.org/zap"
@@ -35,7 +36,13 @@ func (l SqlRecorderLogger) Trace(
 	err error,
 ) {
 	sql, rows := fc()
-	logger.Info(ctx, "sql", zap.String("sql", sql), zap.Int64("rows", rows), zap.Error(err))
+	logger.WithChannel(app_const.LogSql).Info(
+		ctx,
+		"sql",
+		zap.String("sql", sql),
+		zap.Int64("rows", rows),
+		zap.Error(err),
+	)
 }
 
 func init() {

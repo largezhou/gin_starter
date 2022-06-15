@@ -11,12 +11,7 @@ import (
 	"os"
 )
 
-var c = config.Config.Log
-var Logger *zap.Logger
-
-// callerSkip 需要跳过的 堆栈 数，由于 logger 方法被包装了 1 层，所以需要跳过 1 层
-const callerSkip = 1
-
+var cfg = config.Config.Log
 var intLevelMap = map[string]zapcore.Level{
 	"debug":     zap.DebugLevel,
 	"info":      zap.InfoLevel,
@@ -27,8 +22,17 @@ var intLevelMap = map[string]zapcore.Level{
 	"fatal":     zap.FatalLevel,
 }
 
+// Logger 包级别默认日志
+var Logger = WithChannel(app_const.LogDefault)
+
+// callerSkip 需要跳过的 堆栈 数，由于 logger 方法被包装了 1 层，所以需要跳过 1 层
+const callerSkip = 2
+
+var zapLogger = new(zap.Logger)
+var Loggers = make(map[string]*GLogger)
+
 func init() {
-	level, ok := intLevelMap[c.Level]
+	level, ok := intLevelMap[cfg.Level]
 	if !ok {
 		level = zap.InfoLevel
 	}
@@ -36,20 +40,20 @@ func init() {
 	cores := []zapcore.Core{
 		zapcore.NewCore(zapcore.NewJSONEncoder(createEncodeConfig()), createFileWriter(), level),
 	}
-	if c.Stdout {
+	if cfg.Stdout {
 		cores = append(
 			cores,
 			zapcore.NewCore(zapcore.NewConsoleEncoder(createEncodeConfig()), createConsoleWriter(), level),
 		)
 	}
-	Logger = zap.New(
+	*zapLogger = *zap.New(
 		zapcore.NewTee(cores...),
 		zap.AddCaller(),
 		zap.AddCallerSkip(callerSkip),
 	)
 
 	shutdown.RegisterShutdownFunc(func(ctx context.Context) {
-		_ = Logger.Sync()
+		_ = zapLogger.Sync()
 	})
 }
 
@@ -84,42 +88,38 @@ func createEncodeConfig() zapcore.EncoderConfig {
 	}
 }
 
-func getTraceId(ctx context.Context) string {
-	if traceId, ok := ctx.Value(app_const.TraceIdKey).(string); ok {
-		return traceId
-	} else {
-		return ""
+func WithChannel(channel string) *GLogger {
+	if l := Loggers[channel]; l == nil {
+		l = &GLogger{
+			logger:  zapLogger,
+			channel: channel,
+		}
+		Loggers[channel] = l
 	}
-}
 
-func getFields(ctx context.Context, fields []zap.Field) []zap.Field {
-	traceId := getTraceId(ctx)
-	if traceId != "" {
-		return append(fields, zap.String(app_const.TraceIdKey, traceId))
-	}
-	return fields
+	return Loggers[channel]
 }
 
 func Debug(ctx context.Context, msg string, fields ...zap.Field) {
-	Logger.Debug(msg, getFields(ctx, fields)...)
+	Logger.Debug(ctx, msg, fields...)
 }
 
 func Info(ctx context.Context, msg string, fields ...zap.Field) {
-	Logger.Info(msg, getFields(ctx, fields)...)
+	Logger.Info(ctx, msg, fields...)
 }
 
 func Warn(ctx context.Context, msg string, fields ...zap.Field) {
-	Logger.Warn(msg, getFields(ctx, fields)...)
+	Logger.Warn(ctx, msg, fields...)
 }
 func Error(ctx context.Context, msg string, fields ...zap.Field) {
-	Logger.Error(msg, getFields(ctx, fields)...)
+	Logger.Error(ctx, msg, fields...)
 }
 func DPanic(ctx context.Context, msg string, fields ...zap.Field) {
-	Logger.DPanic(msg, getFields(ctx, fields)...)
+	Logger.DPanic(ctx, msg, fields...)
 }
 func Panic(ctx context.Context, msg string, fields ...zap.Field) {
-	Logger.Panic(msg, getFields(ctx, fields)...)
+	Logger.Panic(ctx, msg, fields...)
 }
 func Fatal(ctx context.Context, msg string, fields ...zap.Field) {
-	Logger.Fatal(msg, getFields(ctx, fields)...)
+	Logger.Fatal(ctx, msg, fields...)
 }

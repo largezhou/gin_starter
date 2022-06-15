@@ -8,3 +8,11 @@ const (
 	// TraceIdKey 链路追踪 ID 的键名
 	TraceIdKey = "traceId"
 )
+
+// 日志渠道
+const (
+	LogDefault = "default"
+	LogAccess  = "access"
+	LogCron    = "cron"
+	LogSql     = "sql"
+)

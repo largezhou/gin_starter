@@ -9,6 +9,6 @@ import (
 func init() {
 	app.NewCron("*/5 * * * * ?", func() {
 		ctx := helper.NewTraceIdContext()
-		logger.Debug(ctx, "cron")
+		logger.WithChannel("cron").Debug(ctx, "cron")
 	}).SkipIfStillRunning()
 }

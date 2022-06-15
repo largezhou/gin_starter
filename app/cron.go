@@ -2,6 +2,7 @@ package app
 
 import (
 	"context"
+	"github.com/largezhou/gin_starter/app/app_const"
 	"github.com/largezhou/gin_starter/app/logger"
 	"github.com/robfig/cron/v3"
 	"go.uber.org/zap"
@@ -13,11 +14,11 @@ type CronLogger struct {
 }
 
 func (c CronLogger) Info(msg string, keysAndValues ...interface{}) {
-	logger.Info(context.Background(), msg, zap.Any("keysAndValues", keysAndValues))
+	logger.WithChannel(app_const.LogCron).Info(context.Background(), msg, zap.Any("keysAndValues", keysAndValues))
 }
 
 func (c CronLogger) Error(err error, msg string, keysAndValues ...interface{}) {
-	logger.Error(context.Background(), msg, zap.Error(err), zap.Any("keysAndValues", keysAndValues))
+	logger.WithChannel(app_const.LogCron).Error(context.Background(), msg, zap.Error(err), zap.Any("keysAndValues", keysAndValues))
 }
 
 type CronJob struct {

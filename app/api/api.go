@@ -19,10 +19,10 @@ func InitRouter(r *gin.Engine) {
 			middleware.Recovery(failAny),
 		)
 
-		g.POST("/hello", func(ctx *gin.Context) {
+		g.GET("/hello", func(ctx *gin.Context) {
 			ok(ctx, "world", "")
 		})
-		g.POST("/error", func(ctx *gin.Context) {
+		g.GET("/error", func(ctx *gin.Context) {
 			fail(ctx, errors.New("error"))
 		})
 	}
