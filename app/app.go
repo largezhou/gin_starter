@@ -44,6 +44,8 @@ func init() {
 		cronPkg.WithLocation(loc),
 		cronPkg.WithChain(
 			cronPkg.Recover(&CronLogger{}),
+			SkipIfStillRunning(&CronLogger{}),
+			DelayIfStillRunning(&CronLogger{}),
 		),
 		cronPkg.WithLogger(&CronLogger{}),
 	)
@@ -108,7 +110,7 @@ func runServer(ctx context.Context) {
 	}()
 
 	if cfg.Cron {
-		Cron.Start()
+		runCron(ctx)
 		defer Cron.Stop()
 	}
 
@@ -131,4 +133,13 @@ func runConsole(ctx context.Context) {
 		logger.Error(ctx, "命令行执行失败", zap.Error(err))
 		panic(err)
 	}
+}
+
+func runCron(ctx context.Context) {
+	for _, cron := range cronList {
+		if _, err := Cron.AddJob(cron.spec, cron); err != nil {
+			panic(err)
+		}
+	}
+	Cron.Start()
 }
