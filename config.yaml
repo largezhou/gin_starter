@@ -5,7 +5,7 @@ app:
   debug: ${APP_DEBUG:false}
   timezone: Asia/Shanghai
   key: ${APP_KEY:}
-  cron: ${APP_CRON:true}
+  cron: ${APP_CRON:false}
 
 log:
   level: ${LOG_LEVEL:info}
