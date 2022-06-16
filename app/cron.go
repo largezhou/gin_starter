@@ -25,8 +25,9 @@ type CronJob struct {
 	spec string
 	f    func()
 
-	skipIfStillRunning  bool
-	delayIfStillRunning bool
+	skipIfStillRunning  bool // 前面的任务还未执行结束时，是否跳过
+	delayIfStillRunning bool // 前面的任务还未执行结束时，是否延迟执行
+	runImmediate        bool // 启动时是否直接执行一次
 }
 
 var cronList []*CronJob
@@ -48,13 +49,21 @@ func (c *CronJob) Run() {
 	c.f()
 }
 
+// SkipIfStillRunning 如果上一次任务还在执行，则跳过当前的任务
 func (c *CronJob) SkipIfStillRunning() *CronJob {
 	c.skipIfStillRunning = true
 	return c
 }
 
+// DelayIfStillRunning 如果上一次任务还在执行，则延迟执行
 func (c *CronJob) DelayIfStillRunning() *CronJob {
 	c.delayIfStillRunning = true
+	return c
+}
+
+// RunImmediate 启动时会执行一次
+func (c *CronJob) RunImmediate() *CronJob {
+	c.runImmediate = true
 	return c
 }
 

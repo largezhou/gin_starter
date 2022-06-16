@@ -137,6 +137,10 @@ func runConsole(ctx context.Context) {
 
 func runCron(ctx context.Context) {
 	for _, cron := range cronList {
+		if cron.runImmediate {
+			cron.Run()
+		}
+
 		if _, err := Cron.AddJob(cron.spec, cron); err != nil {
 			panic(err)
 		}

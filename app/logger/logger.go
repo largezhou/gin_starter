@@ -25,7 +25,7 @@ var intLevelMap = map[string]zapcore.Level{
 // Logger 包级别默认日志
 var Logger = WithChannel(app_const.LogDefault)
 
-// callerSkip 需要跳过的 堆栈 数，由于 logger 方法被包装了 1 层，所以需要跳过 1 层
+// callerSkip 需要跳过的 堆栈 数，由于 logger 方法可能会被封装，所以需要跳过封装的层数
 const callerSkip = 2
 
 var zapLogger = new(zap.Logger)
