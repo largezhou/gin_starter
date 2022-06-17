@@ -39,15 +39,18 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
+
+	cronLogger := CronLogger{}
 	Cron = cronPkg.New(
 		cronPkg.WithSeconds(),
 		cronPkg.WithLocation(loc),
 		cronPkg.WithChain(
-			cronPkg.Recover(&CronLogger{}),
-			SkipIfStillRunning(&CronLogger{}),
-			DelayIfStillRunning(&CronLogger{}),
+			cronPkg.Recover(cronLogger),
+			SkipIfStillRunning(cronLogger),
+			DelayIfStillRunning(cronLogger),
+			SkipIfRunningOnOtherServer(cronLogger),
 		),
-		cronPkg.WithLogger(&CronLogger{}),
+		cronPkg.WithLogger(cronLogger),
 	)
 }
 

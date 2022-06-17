@@ -10,5 +10,9 @@ func init() {
 	app.NewCron("*/5 * * * * ?", func() {
 		ctx := helper.NewTraceIdContext()
 		logger.WithChannel("cron").Debug(ctx, "cron")
-	}).SkipIfStillRunning().RunImmediate()
+	}).
+		SkipIfStillRunning().
+		RunImmediate().
+		SetName("test").
+		RunOnOneServer()
 }
