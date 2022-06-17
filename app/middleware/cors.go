@@ -6,8 +6,8 @@ import (
 )
 
 // Cors 简单跨域中间件
-func Cors(r gin.IRoutes) gin.HandlerFunc {
-	corsFunc := func(ctx *gin.Context) {
+func Cors() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
 		ctx.Header("Access-Control-Allow-Origin", "*")
 		ctx.Header("Access-Control-Allow-Methods", "*")
 		ctx.Header("Access-Control-Allow-Headers", "*")
@@ -19,9 +19,4 @@ func Cors(r gin.IRoutes) gin.HandlerFunc {
 
 		ctx.Next()
 	}
-	r.Use(corsFunc).OPTIONS("/*ignore", func(ctx *gin.Context) {
-		return
-	})
-
-	return corsFunc
 }

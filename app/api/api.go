@@ -15,7 +15,6 @@ import (
 func InitRouter(r *gin.Engine) {
 	{
 		g := r.Group("/api").Use(
-			middleware.Cors(r.Group("/api")),
 			middleware.Recovery(failAny),
 		)
 
