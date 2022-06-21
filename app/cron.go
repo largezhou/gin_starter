@@ -17,11 +17,11 @@ import (
 type CronLogger struct {
 }
 
-func (c CronLogger) Info(msg string, keysAndValues ...interface{}) {
+func (c CronLogger) Info(msg string, keysAndValues ...any) {
 	logger.WithChannel(app_const.LogCron).Info(context.Background(), msg, zap.Any("keysAndValues", keysAndValues))
 }
 
-func (c CronLogger) Error(err error, msg string, keysAndValues ...interface{}) {
+func (c CronLogger) Error(err error, msg string, keysAndValues ...any) {
 	logger.WithChannel(app_const.LogCron).Error(context.Background(), msg, zap.Error(err), zap.Any("keysAndValues", keysAndValues))
 }
 
