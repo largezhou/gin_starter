@@ -3,6 +3,9 @@ package app
 import (
 	"context"
 	"errors"
+	"sync"
+	"time"
+
 	"github.com/google/uuid"
 	"github.com/largezhou/gin_starter/app/app_const"
 	"github.com/largezhou/gin_starter/app/helper"
@@ -10,8 +13,6 @@ import (
 	"github.com/largezhou/gin_starter/app/redis"
 	"github.com/robfig/cron/v3"
 	"go.uber.org/zap"
-	"sync"
-	"time"
 )
 
 type CronLogger struct {

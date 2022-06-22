@@ -2,6 +2,10 @@ package model
 
 import (
 	"context"
+	"net/url"
+	"strings"
+	"time"
+
 	"github.com/largezhou/gin_starter/app/app_const"
 	"github.com/largezhou/gin_starter/app/config"
 	"github.com/largezhou/gin_starter/app/logger"
@@ -10,9 +14,6 @@ import (
 	"gorm.io/gorm"
 	gormLogger "gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
-	"net/url"
-	"strings"
-	"time"
 )
 
 var c = config.Config.Mysql
@@ -25,11 +26,25 @@ type Model struct {
 	UpdateTime time.Time `gorm:"type:datetime;autoUpdateTime;not null" json:"updateTime"`
 }
 
-type SqlRecorderLogger struct {
-	gormLogger.Interface
+type SqlRecorderLogger struct{}
+
+func (l *SqlRecorderLogger) LogMode(level gormLogger.LogLevel) gormLogger.Interface {
+	return l
 }
 
-func (l SqlRecorderLogger) Trace(
+func (l *SqlRecorderLogger) Info(ctx context.Context, msg string, data ...interface{}) {
+	// ignore
+}
+
+func (l *SqlRecorderLogger) Warn(ctx context.Context, msg string, data ...interface{}) {
+	// ignore
+}
+
+func (l *SqlRecorderLogger) Error(ctx context.Context, msg string, data ...interface{}) {
+	// ignore
+}
+
+func (l *SqlRecorderLogger) Trace(
 	ctx context.Context,
 	_ time.Time,
 	fc func() (sql string, rowsAffected int64),

@@ -2,11 +2,12 @@ package command
 
 import (
 	"fmt"
-	"github.com/urfave/cli/v2"
-	"gorm.io/gorm"
 	"io/ioutil"
 	"os"
 	"regexp"
+
+	"github.com/urfave/cli/v2"
+	"gorm.io/gorm"
 )
 
 func NewMigrateRollbackCommand() *cli.Command {

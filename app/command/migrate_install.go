@@ -2,15 +2,16 @@ package command
 
 import (
 	"fmt"
-	"github.com/largezhou/gin_starter/app/model"
-	"github.com/urfave/cli/v2"
-	"gorm.io/gorm"
 	"io/fs"
 	"io/ioutil"
 	"os"
 	"regexp"
 	"sort"
 	"strings"
+
+	"github.com/largezhou/gin_starter/app/model"
+	"github.com/urfave/cli/v2"
+	"gorm.io/gorm"
 )
 
 func NewMigrateInstallCommand() *cli.Command {

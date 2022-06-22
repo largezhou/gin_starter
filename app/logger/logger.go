@@ -2,13 +2,14 @@ package logger
 
 import (
 	"context"
+	"os"
+
 	"github.com/largezhou/gin_starter/app/app_const"
 	"github.com/largezhou/gin_starter/app/config"
 	"github.com/largezhou/gin_starter/app/shutdown"
 	"github.com/natefinch/lumberjack"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
-	"os"
 )
 
 var cfg = config.Config.Log

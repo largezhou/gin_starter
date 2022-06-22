@@ -2,9 +2,10 @@ package redis
 
 import (
 	"context"
+	"time"
+
 	"github.com/largezhou/gin_starter/app/logger"
 	"go.uber.org/zap"
-	"time"
 )
 
 const releaseLockLuaScript = `

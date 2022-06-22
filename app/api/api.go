@@ -3,13 +3,14 @@ package api
 import (
 	"errors"
 	"fmt"
+	"net/http"
+	"runtime/debug"
+
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"github.com/largezhou/gin_starter/app/app_error"
 	"github.com/largezhou/gin_starter/app/config"
 	"github.com/largezhou/gin_starter/app/middleware"
-	"net/http"
-	"runtime/debug"
 )
 
 func InitRouter(r *gin.Engine) {

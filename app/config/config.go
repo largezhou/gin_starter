@@ -3,9 +3,10 @@ package config
 import (
 	"bytes"
 	"fmt"
-	"github.com/spf13/viper"
 	"os"
 	"regexp"
+
+	"github.com/spf13/viper"
 )
 
 var Config struct {

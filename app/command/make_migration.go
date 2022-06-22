@@ -3,10 +3,11 @@ package command
 import (
 	"errors"
 	"fmt"
-	"github.com/urfave/cli/v2"
 	"io/ioutil"
 	"os"
 	"time"
+
+	"github.com/urfave/cli/v2"
 )
 
 var filepath string

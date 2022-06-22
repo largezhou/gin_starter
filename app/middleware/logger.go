@@ -2,13 +2,14 @@ package middleware
 
 import (
 	"bytes"
+	"io/ioutil"
+	"time"
+
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/largezhou/gin_starter/app/app_const"
 	"github.com/largezhou/gin_starter/app/logger"
 	"go.uber.org/zap"
-	"io/ioutil"
-	"time"
 )
 
 type bodyLogWriter struct {

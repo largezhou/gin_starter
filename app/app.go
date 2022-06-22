@@ -2,6 +2,12 @@ package app
 
 import (
 	"context"
+	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
+
 	"github.com/gin-gonic/gin"
 	"github.com/largezhou/gin_starter/app/app_const"
 	"github.com/largezhou/gin_starter/app/command"
@@ -12,11 +18,6 @@ import (
 	cronPkg "github.com/robfig/cron/v3"
 	"github.com/urfave/cli/v2"
 	"go.uber.org/zap"
-	"net/http"
-	"os"
-	"os/signal"
-	"syscall"
-	"time"
 )
 
 var cfg = config.Config.App

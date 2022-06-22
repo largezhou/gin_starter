@@ -2,9 +2,10 @@ package logger
 
 import (
 	"context"
+	"strings"
+
 	"github.com/largezhou/gin_starter/app/app_const"
 	"go.uber.org/zap"
-	"strings"
 )
 
 type GLogger struct {
