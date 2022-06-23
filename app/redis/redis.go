@@ -3,7 +3,7 @@ package redis
 import (
 	r "github.com/go-redis/redis/v8"
 	"github.com/largezhou/gin_starter/app/config"
-	"github.com/largezhou/gin_starter/app/init_ctx"
+	"github.com/largezhou/gin_starter/app/initctx"
 )
 
 var cfg = config.Config.Redis
@@ -14,5 +14,5 @@ func init() {
 		Addr:     cfg.Host,
 		Password: cfg.Password,
 		DB:       cfg.Db,
-	}).WithContext(init_ctx.Ctx)
+	}).WithContext(initctx.Ctx)
 }

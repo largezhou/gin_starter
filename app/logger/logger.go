@@ -4,7 +4,7 @@ import (
 	"context"
 	"os"
 
-	"github.com/largezhou/gin_starter/app/app_const"
+	"github.com/largezhou/gin_starter/app/appconst"
 	"github.com/largezhou/gin_starter/app/config"
 	"github.com/largezhou/gin_starter/app/shutdown"
 	"github.com/natefinch/lumberjack"
@@ -24,13 +24,13 @@ var intLevelMap = map[string]zapcore.Level{
 }
 
 // Logger 包级别默认日志
-var Logger = WithChannel(app_const.LogDefault)
+var Logger = WithChannel(appconst.LogDefault)
 
 // callerSkip 需要跳过的 堆栈 数，由于 logger 方法可能会被封装，所以需要跳过封装的层数
 const callerSkip = 2
 
 var zapLogger = new(zap.Logger)
-var Loggers = make(map[string]*GLogger)
+var Loggers = make(map[string]*AppLogger)
 
 func init() {
 	level, ok := intLevelMap[cfg.Level]
@@ -89,9 +89,9 @@ func createEncodeConfig() zapcore.EncoderConfig {
 	}
 }
 
-func WithChannel(channel string) *GLogger {
+func WithChannel(channel string) *AppLogger {
 	if l := Loggers[channel]; l == nil {
-		l = &GLogger{
+		l = &AppLogger{
 			logger:  zapLogger,
 			channel: channel,
 		}

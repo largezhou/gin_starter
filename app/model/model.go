@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/largezhou/gin_starter/app/app_const"
+	"github.com/largezhou/gin_starter/app/appconst"
 	"github.com/largezhou/gin_starter/app/config"
 	"github.com/largezhou/gin_starter/app/logger"
 	"go.uber.org/zap"
@@ -51,7 +51,7 @@ func (l *SqlRecorderLogger) Trace(
 	err error,
 ) {
 	sql, rows := fc()
-	logger.WithChannel(app_const.LogSql).Info(
+	logger.WithChannel(appconst.LogSql).Info(
 		ctx,
 		"sql",
 		zap.String("sql", sql),

@@ -8,7 +8,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
-	"github.com/largezhou/gin_starter/app/app_error"
+	"github.com/largezhou/gin_starter/app/apperror"
 	"github.com/largezhou/gin_starter/app/config"
 	"github.com/largezhou/gin_starter/app/middleware"
 )
@@ -40,9 +40,9 @@ func failAny(ctx *gin.Context, err any) {
 func fail(ctx *gin.Context, err error) {
 	switch {
 	case errors.As(err, &validator.ValidationErrors{}):
-		response(ctx, app_error.InvalidParameter, err.Error(), nil, nil)
-	case errors.As(err, &app_error.Error{}):
-		e := err.(app_error.Error)
+		response(ctx, apperror.InvalidParameter, err.Error(), nil, nil)
+	case errors.As(err, &apperror.Error{}):
+		e := err.(apperror.Error)
 		response(ctx, e.Code, e.Msg, nil, nil)
 	default:
 		handleDefaultError(ctx, err)
@@ -64,11 +64,11 @@ func handleDefaultError(ctx *gin.Context, err any) {
 		msg = http.StatusText(http.StatusInternalServerError)
 	}
 
-	response(ctx, app_error.UnknownErr, msg, nil, fields)
+	response(ctx, apperror.UnknownErr, msg, nil, fields)
 }
 
 func ok(ctx *gin.Context, data any, msg string) {
-	response(ctx, app_error.StatusOk, msg, data, nil)
+	response(ctx, apperror.StatusOk, msg, data, nil)
 }
 
 func response(ctx *gin.Context, code int, msg string, data any, fields gin.H) {

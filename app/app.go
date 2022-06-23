@@ -9,10 +9,10 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/largezhou/gin_starter/app/app_const"
+	"github.com/largezhou/gin_starter/app/appconst"
 	"github.com/largezhou/gin_starter/app/command"
 	"github.com/largezhou/gin_starter/app/config"
-	"github.com/largezhou/gin_starter/app/init_ctx"
+	"github.com/largezhou/gin_starter/app/initctx"
 	"github.com/largezhou/gin_starter/app/logger"
 	"github.com/largezhou/gin_starter/app/middleware"
 	cronPkg "github.com/robfig/cron/v3"
@@ -29,7 +29,7 @@ var Cron *cronPkg.Cron
 var Args []string
 
 func init() {
-	ctx := init_ctx.Ctx
+	ctx := initctx.Ctx
 	Engine = initServer(ctx)
 	Console = &cli.App{
 		Commands: command.Commands,
@@ -57,7 +57,7 @@ func init() {
 
 func RunInConsole(ctx context.Context) bool {
 	args := os.Args
-	return len(args) >= 2 && args[1] == app_const.CliKey
+	return len(args) >= 2 && args[1] == appconst.CliKey
 }
 
 func initServer(ctx context.Context) *gin.Engine {

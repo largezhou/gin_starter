@@ -1,4 +1,4 @@
-package app_error
+package apperror
 
 const (
 	StatusOk         = 0

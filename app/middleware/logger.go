@@ -7,7 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
-	"github.com/largezhou/gin_starter/app/app_const"
+	"github.com/largezhou/gin_starter/app/appconst"
 	"github.com/largezhou/gin_starter/app/logger"
 	"go.uber.org/zap"
 )
@@ -38,7 +38,7 @@ func Logger() gin.HandlerFunc {
 			data = zap.Any("data", form)
 		}
 
-		logger.WithChannel(app_const.LogAccess).Info(
+		logger.WithChannel(appconst.LogAccess).Info(
 			ctx,
 			"request",
 			zap.String("clientIp", ctx.ClientIP()),
@@ -55,7 +55,7 @@ func Logger() gin.HandlerFunc {
 
 		ctx.Next()
 
-		logger.WithChannel(app_const.LogAccess).Info(
+		logger.WithChannel(appconst.LogAccess).Info(
 			ctx,
 			"response",
 			zap.Duration("cost", time.Now().Sub(start)),

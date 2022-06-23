@@ -1,4 +1,4 @@
-package init_ctx
+package initctx
 
 import (
 	"github.com/largezhou/gin_starter/app/helper"

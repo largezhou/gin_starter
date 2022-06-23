@@ -1,4 +1,4 @@
-package app_const
+package appconst
 
 const (
 	// TraceIdHeaderKey 请求头中链路追踪 ID 的键名

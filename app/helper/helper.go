@@ -5,8 +5,8 @@ import (
 	"errors"
 
 	"github.com/google/uuid"
-	"github.com/largezhou/gin_starter/app/app_const"
-	"github.com/largezhou/gin_starter/app/app_error"
+	"github.com/largezhou/gin_starter/app/appconst"
+	"github.com/largezhou/gin_starter/app/apperror"
 	"github.com/largezhou/gin_starter/app/config"
 	"gorm.io/gorm"
 )
@@ -21,7 +21,7 @@ func CheckAppKey() {
 // ModelNotFound 处理模型未找到
 func ModelNotFound(err error, msg string) error {
 	if errors.Is(err, gorm.ErrRecordNotFound) {
-		return app_error.New(msg).SetCode(app_error.ResourceNotFound)
+		return apperror.New(msg).SetCode(apperror.ResourceNotFound)
 	} else {
 		return err
 	}
@@ -29,5 +29,5 @@ func ModelNotFound(err error, msg string) error {
 
 // NewTraceIdContext 返回一个新的带链路追踪 ID 的 context
 func NewTraceIdContext() context.Context {
-	return context.WithValue(context.Background(), app_const.TraceIdKey, uuid.NewString())
+	return context.WithValue(context.Background(), appconst.TraceIdKey, uuid.NewString())
 }

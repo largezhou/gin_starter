@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/largezhou/gin_starter/app/app_const"
+	"github.com/largezhou/gin_starter/app/appconst"
 	"github.com/largezhou/gin_starter/app/helper"
 	"github.com/largezhou/gin_starter/app/logger"
 	"github.com/largezhou/gin_starter/app/redis"
@@ -19,11 +19,11 @@ type CronLogger struct {
 }
 
 func (c CronLogger) Info(msg string, keysAndValues ...any) {
-	logger.WithChannel(app_const.LogCron).Info(context.Background(), msg, zap.Any("keysAndValues", keysAndValues))
+	logger.WithChannel(appconst.LogCron).Info(context.Background(), msg, zap.Any("keysAndValues", keysAndValues))
 }
 
 func (c CronLogger) Error(err error, msg string, keysAndValues ...any) {
-	logger.WithChannel(app_const.LogCron).Error(context.Background(), msg, zap.Error(err), zap.Any("keysAndValues", keysAndValues))
+	logger.WithChannel(appconst.LogCron).Error(context.Background(), msg, zap.Error(err), zap.Any("keysAndValues", keysAndValues))
 }
 
 type CronJob struct {
