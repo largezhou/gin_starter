@@ -14,13 +14,13 @@ import (
 
 var cfg = config.Config.Log
 var intLevelMap = map[string]zapcore.Level{
-	"debug":     zap.DebugLevel,
-	"info":      zap.InfoLevel,
-	"warn":      zap.WarnLevel,
-	"app_error": zap.ErrorLevel,
-	"dPanic":    zap.DPanicLevel,
-	"panic":     zap.PanicLevel,
-	"fatal":     zap.FatalLevel,
+	"debug":  zap.DebugLevel,
+	"info":   zap.InfoLevel,
+	"warn":   zap.WarnLevel,
+	"error":  zap.ErrorLevel,
+	"dPanic": zap.DPanicLevel,
+	"panic":  zap.PanicLevel,
+	"fatal":  zap.FatalLevel,
 }
 
 // Logger 包级别默认日志

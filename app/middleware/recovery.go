@@ -11,7 +11,7 @@ func Recovery(formatter func(*gin.Context, any)) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		defer func() {
 			if err := recover(); err != nil {
-				logger.Error(ctx, "异常", zap.Any("app_error", err))
+				logger.Error(ctx, "异常", zap.Any("error", err))
 				formatter(ctx, err)
 			}
 		}()
