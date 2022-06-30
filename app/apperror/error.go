@@ -7,11 +7,19 @@ type Error struct {
 }
 
 func (e Error) Error() string {
+	msg := ""
+
 	if e.Msg != "" {
-		return e.Msg
+		msg = e.Msg
 	} else {
-		return errorCodeMap[e.Code]
+		msg = errorCodeMap[e.Code]
 	}
+
+	if e.Cause != nil {
+		msg += ": " + e.Cause.Error()
+	}
+
+	return msg
 }
 
 func (e Error) SetCode(code int) Error {
