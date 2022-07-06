@@ -7,9 +7,9 @@ import (
 	"github.com/largezhou/gin_starter/app/appconst"
 	"github.com/largezhou/gin_starter/app/config"
 	"github.com/largezhou/gin_starter/app/shutdown"
-	"github.com/natefinch/lumberjack"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+	"gopkg.in/natefinch/lumberjack.v2"
 )
 
 var cfg = config.Config.Log

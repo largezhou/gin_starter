@@ -65,8 +65,7 @@ func initServer(ctx context.Context) *gin.Engine {
 		return nil
 	}
 
-	c := config.Config.App
-	if c.Debug {
+	if cfg.Debug {
 		logger.Debug(ctx, "debug 模式运行")
 		gin.SetMode(gin.DebugMode)
 	} else {

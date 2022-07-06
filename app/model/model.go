@@ -16,7 +16,7 @@ import (
 	"gorm.io/gorm/schema"
 )
 
-var c = config.Config.Mysql
+var cfg = config.Config.Mysql
 var appConfig = config.Config.App
 var DB *gorm.DB
 
@@ -61,7 +61,7 @@ func (l *SqlRecorderLogger) Trace(
 }
 
 func init() {
-	dsn := c.Dsn
+	dsn := cfg.Dsn
 	if !strings.Contains(dsn, "loc=") {
 		dsn += "&loc=" + url.QueryEscape(appConfig.Timezone)
 	}
