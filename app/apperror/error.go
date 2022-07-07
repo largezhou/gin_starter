@@ -1,5 +1,11 @@
 package apperror
 
+import (
+	"fmt"
+
+	"github.com/go-playground/validator/v10"
+)
+
 type Error struct {
 	Code  int
 	Msg   string
@@ -43,4 +49,22 @@ func New(msg string) Error {
 		Msg:   msg,
 		Cause: nil,
 	}
+}
+
+// ValidationErrors 包装一下 validator.ValidationErrors
+// 暂时没有处理 i18n 的情况
+type ValidationErrors struct {
+	E validator.ValidationErrors
+}
+
+func (ve ValidationErrors) Error() string {
+	if len(ve.E) == 0 {
+		return ""
+	}
+	fe := ve.E[0]
+	param := fe.Param()
+	if param != "" {
+		param = ":" + param
+	}
+	return fmt.Sprintf("Field validation for '%s' failed on the '%s' tag", fe.Field(), fe.Tag() + param)
 }
