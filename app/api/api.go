@@ -10,7 +10,7 @@ import (
 func InitRouter(r *gin.Engine) {
 	{
 		g := r.Group("/api").Use(
-			middleware.Recovery(failAny),
+			middleware.Recovery(fail),
 		)
 
 		g.GET("/user-list", func(ctx *gin.Context) {

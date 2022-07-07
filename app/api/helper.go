@@ -14,23 +14,25 @@ import (
 	"go.uber.org/zap"
 )
 
-func failAny(ctx *gin.Context, err any) {
-	realErr, ok := err.(error)
-	if ok {
-		fail(ctx, realErr)
-	} else {
+func fail(ctx *gin.Context, err any) {
+	switch err.(type) {
+	case error:
+		failError(ctx, err.(error))
+	case string:
+		failWith(ctx, apperror.CommonError, err.(string))
+	default:
 		handleDefaultError(ctx, err)
 	}
 }
 
-func fail(ctx *gin.Context, err error) {
+func failError(ctx *gin.Context, err error) {
 	switch {
 	case errors.As(err, &validator.ValidationErrors{}):
 		ve := err.(validator.ValidationErrors)
-		response(ctx, apperror.InvalidParameter, (apperror.ValidationErrors{E: ve}).Error(), nil, nil)
+		failWith(ctx, apperror.InvalidParameter, (apperror.ValidationErrors{E: ve}).Error())
 	case errors.As(err, &apperror.Error{}):
 		e := err.(apperror.Error)
-		response(ctx, e.Code, e.Msg, nil, nil)
+		failWith(ctx, e.Code, e.Msg)
 	default:
 		handleDefaultError(ctx, err)
 	}
@@ -61,7 +63,7 @@ func ok(ctx *gin.Context, data any) {
 	response(ctx, apperror.StatusOk, "", data, nil)
 }
 
-func okMsg(ctx *gin.Context, data any, msg string) {
+func okMsg(ctx *gin.Context, msg string, data any) {
 	response(ctx, apperror.StatusOk, msg, data, nil)
 }
 
