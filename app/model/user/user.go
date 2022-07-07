@@ -8,8 +8,6 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-var db = model.DB
-
 type User struct {
 	model.Model
 	Uuid     string  `json:"uuid"`
@@ -27,12 +25,12 @@ func Create(ctx context.Context, user *User) (*User, error) {
 	}
 	user.Password = string(b)
 
-	res := db.WithContext(ctx).Create(&user)
+	res := model.Get(ctx).Create(&user)
 	return user, res.Error
 }
 
 func GetUserList(ctx context.Context) ([]*User, error) {
 	var userList []*User
-	res := db.WithContext(ctx).Find(&userList)
+	res := model.Get(ctx).Find(&userList)
 	return userList, res.Error
 }

@@ -6,15 +6,20 @@ import (
 	"strings"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	"github.com/largezhou/gin_starter/app/appconst"
 	"github.com/largezhou/gin_starter/app/config"
 	"github.com/largezhou/gin_starter/app/logger"
+	"github.com/largezhou/gin_starter/app/middleware"
 	"go.uber.org/zap"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	gormLogger "gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
 )
+
+// ctxKey 存储到 ctx 中的键名
+const ctxKey = "db"
 
 var cfg = config.Config.Mysql
 var appConfig = config.Config.App
@@ -60,6 +65,11 @@ func (l *SqlRecorderLogger) Trace(
 	)
 }
 
+// Get 从 context 中获取当前请求中的 db 实例
+func Get(ctx context.Context) *gorm.DB {
+	return ctx.Value(ctxKey).(*gorm.DB)
+}
+
 func init() {
 	dsn := cfg.Dsn
 	if !strings.Contains(dsn, "loc=") {
@@ -76,4 +86,8 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
+
+	middleware.RegisterFunc(func(ctx *gin.Context) {
+		ctx.Set(ctxKey, DB.WithContext(ctx))
+	})
 }

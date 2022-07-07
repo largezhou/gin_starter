@@ -76,6 +76,7 @@ func initServer(ctx context.Context) *gin.Engine {
 	r.MaxMultipartMemory = 10 << 20
 	r.Use(
 		middleware.SetTraceId(),
+		middleware.SetToContext(),
 		middleware.Cors(),
 		middleware.Logger(),
 	)
