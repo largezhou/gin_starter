@@ -6,7 +6,7 @@ import (
 
 var setToContextFuncList []func(*gin.Context)
 
-func RegisterFunc(f func(ctx *gin.Context)) {
+func RegisterSetToContextFunc(f func(ctx *gin.Context)) {
 	setToContextFuncList = append(setToContextFuncList, f)
 }
 

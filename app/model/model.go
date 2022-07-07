@@ -87,7 +87,7 @@ func init() {
 		panic(err)
 	}
 
-	middleware.RegisterFunc(func(ctx *gin.Context) {
+	middleware.RegisterSetToContextFunc(func(ctx *gin.Context) {
 		ctx.Set(ctxKey, DB.WithContext(ctx))
 	})
 }
