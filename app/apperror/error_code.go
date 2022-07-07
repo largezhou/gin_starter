@@ -2,8 +2,8 @@ package apperror
 
 const (
 	StatusOk         = 0
-	UnknownErr       = 50000
-	CommonError      = 40000
+	InternalError    = 50000
+	OperateFail      = 40000
 	AuthFail         = 40001
 	ResourceNotFound = 40004
 	InvalidParameter = 40022
@@ -11,9 +11,17 @@ const (
 
 var errorCodeMap = map[int]string{
 	StatusOk:         "成功",
-	UnknownErr:       "未知错误",
-	CommonError:      "出错了",
+	InternalError:    "服务器异常",
+	OperateFail:      "操作失败",
 	AuthFail:         "认证失败",
 	ResourceNotFound: "资源不存在",
 	InvalidParameter: "参数错误",
+}
+
+func GetMsg(code int) string {
+	if msg, ok := errorCodeMap[code]; ok {
+		return msg
+	}
+
+	return errorCodeMap[InternalError]
 }

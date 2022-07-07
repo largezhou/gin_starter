@@ -45,7 +45,7 @@ func (e Error) SetCause(err error) Error {
 
 func New(msg string) Error {
 	return Error{
-		Code:  CommonError,
+		Code:  OperateFail,
 		Msg:   msg,
 		Cause: nil,
 	}
@@ -66,5 +66,5 @@ func (ve ValidationErrors) Error() string {
 	if param != "" {
 		param = ":" + param
 	}
-	return fmt.Sprintf("Field validation for '%s' failed on the '%s' tag", fe.Field(), fe.Tag() + param)
+	return fmt.Sprintf("字段 [ %s ] 验证规则 [ %s ] 失败", fe.Field(), fe.Tag() + param)
 }

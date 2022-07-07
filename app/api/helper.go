@@ -19,7 +19,7 @@ func fail(ctx *gin.Context, err any) {
 	case error:
 		failError(ctx, err.(error))
 	case string:
-		failWith(ctx, apperror.CommonError, err.(string))
+		failWith(ctx, apperror.OperateFail, err.(string))
 	default:
 		handleDefaultError(ctx, err)
 	}
@@ -53,10 +53,10 @@ func handleDefaultError(ctx *gin.Context, err any) {
 	if config.Config.App.Debug {
 		fields["trace"] = trace
 	} else {
-		msg = http.StatusText(http.StatusInternalServerError)
+		msg = apperror.GetMsg(apperror.InternalError)
 	}
 
-	response(ctx, apperror.UnknownErr, msg, nil, fields)
+	response(ctx, apperror.InternalError, msg, nil, fields)
 }
 
 func ok(ctx *gin.Context, data any) {
