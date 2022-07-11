@@ -11,13 +11,15 @@ import (
 
 var Config struct {
 	App struct { // 应用基础配置
-		Host     string // 监听 IP
-		Port     string // 监听 端口
-		Env      string // 环境
-		Debug    bool   // 是否开启 debug
-		Timezone string // 时区
-		Key      string // 加密密钥
-		Cron     bool   // 是否启用定时任务
+		Host           string // 监听 IP
+		Port           string // 监听 端口
+		Env            string // 环境
+		Debug          bool   // 是否开启 debug
+		Timezone       string // 时区
+		Key            string // 加密密钥
+		Cron           bool   // 是否启用定时任务
+		Locale         string // 应用语言
+		FallbackLocale string // 备用语言
 	}
 	Log struct { // 日志配置
 		Level  string // 日志级别

@@ -6,6 +6,8 @@ app:
   timezone: Asia/Shanghai
   key: ${APP_KEY:}
   cron: ${APP_CRON:false}
+  locale: zh
+  fallbackLocale: en
 
 log:
   level: ${LOG_LEVEL:info}

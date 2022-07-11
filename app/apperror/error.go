@@ -1,9 +1,8 @@
 package apperror
 
 import (
-	"fmt"
-
 	"github.com/go-playground/validator/v10"
+	"github.com/largezhou/gin_starter/app/trans"
 )
 
 type Error struct {
@@ -52,7 +51,6 @@ func New(msg string) Error {
 }
 
 // ValidationErrors 包装一下 validator.ValidationErrors
-// 暂时没有处理 i18n 的情况
 type ValidationErrors struct {
 	E validator.ValidationErrors
 }
@@ -61,10 +59,5 @@ func (ve ValidationErrors) Error() string {
 	if len(ve.E) == 0 {
 		return ""
 	}
-	fe := ve.E[0]
-	param := fe.Param()
-	if param != "" {
-		param = ":" + param
-	}
-	return fmt.Sprintf("字段 [ %s ] 验证规则 [ %s ] 失败", fe.Field(), fe.Tag() + param)
+	return ve.E[0].Translate(trans.Translator)
 }
