@@ -9,7 +9,7 @@ const (
 	InvalidParameter = 40022
 )
 
-var errorCodeMap = map[int]string{
+var ErrorCodeMap = map[int]string{
 	StatusOk:         "成功",
 	InternalError:    "服务器异常",
 	OperateFail:      "操作失败",
@@ -19,9 +19,9 @@ var errorCodeMap = map[int]string{
 }
 
 func GetMsg(code int) string {
-	if msg, ok := errorCodeMap[code]; ok {
+	if msg, ok := ErrorCodeMap[code]; ok {
 		return msg
 	}
 
-	return errorCodeMap[InternalError]
+	return ErrorCodeMap[InternalError]
 }

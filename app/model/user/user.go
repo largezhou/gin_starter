@@ -25,12 +25,12 @@ func Create(ctx context.Context, user *User) (*User, error) {
 	}
 	user.Password = string(b)
 
-	res := model.Get(ctx).Create(&user)
+	res := model.FromCtx(ctx).Create(&user)
 	return user, res.Error
 }
 
 func GetUserList(ctx context.Context) ([]*User, error) {
 	var userList []*User
-	res := model.Get(ctx).Find(&userList)
+	res := model.FromCtx(ctx).Find(&userList)
 	return userList, res.Error
 }

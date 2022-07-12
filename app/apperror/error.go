@@ -17,7 +17,7 @@ func (e Error) Error() string {
 	if e.Msg != "" {
 		msg = e.Msg
 	} else {
-		msg = errorCodeMap[e.Code]
+		msg = ErrorCodeMap[e.Code]
 	}
 
 	if e.Cause != nil {

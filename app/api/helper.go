@@ -12,7 +12,17 @@ import (
 	"github.com/largezhou/gin_starter/app/config"
 	"github.com/largezhou/gin_starter/app/logger"
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 )
+
+// apiRecover 中间件的错误处理函数
+func apiRecover(ctx *gin.Context, err any) {
+	if s, ok := err.(string); ok {
+		err = errors.New(s)
+	}
+
+	fail(ctx, err)
+}
 
 func fail(ctx *gin.Context, err any) {
 	switch err.(type) {
@@ -20,11 +30,19 @@ func fail(ctx *gin.Context, err any) {
 		failError(ctx, err.(error))
 	case string:
 		failWith(ctx, apperror.OperateFail, err.(string))
+	case int:
+		code := err.(int)
+		if msg, ok := apperror.ErrorCodeMap[code]; ok {
+			failWith(ctx, code, msg)
+		} else {
+			handleDefaultError(ctx, err)
+		}
 	default:
 		handleDefaultError(ctx, err)
 	}
 }
 
+// failError 单独处理各种特定的错误
 func failError(ctx *gin.Context, err error) {
 	switch {
 	case errors.As(err, &validator.ValidationErrors{}):
@@ -33,6 +51,8 @@ func failError(ctx *gin.Context, err error) {
 	case errors.As(err, &apperror.Error{}):
 		e := err.(apperror.Error)
 		failWith(ctx, e.Code, e.Msg)
+	case errors.Is(err, gorm.ErrRecordNotFound):
+		fail(ctx, apperror.ResourceNotFound)
 	default:
 		handleDefaultError(ctx, err)
 	}
@@ -42,6 +62,7 @@ func failWith(ctx *gin.Context, code int, msg string) {
 	response(ctx, code, msg, nil, nil)
 }
 
+// handleDefaultError 处理非预期的错误，会记录日志和堆栈
 func handleDefaultError(ctx *gin.Context, err any) {
 	msg := fmt.Sprintf("%v", err)
 	trace := string(debug.Stack())

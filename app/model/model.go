@@ -65,8 +65,8 @@ func (l *SqlRecorderLogger) Trace(
 	)
 }
 
-// Get 从 context 中获取当前请求中的 db 实例
-func Get(ctx context.Context) *gorm.DB {
+// FromCtx 从 context 中获取当前请求中的 db 实例
+func FromCtx(ctx context.Context) *gorm.DB {
 	return ctx.Value(ctxKey).(*gorm.DB)
 }
 
