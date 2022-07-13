@@ -11,6 +11,7 @@ import (
 	"github.com/largezhou/gin_starter/app/apperror"
 	"github.com/largezhou/gin_starter/app/config"
 	"github.com/largezhou/gin_starter/app/logger"
+	"github.com/largezhou/gin_starter/app/trans"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 )
@@ -47,7 +48,11 @@ func failError(ctx *gin.Context, err error) {
 	switch {
 	case errors.As(err, &validator.ValidationErrors{}):
 		ve := err.(validator.ValidationErrors)
-		failWith(ctx, apperror.InvalidParameter, (apperror.ValidationErrors{E: ve}).Error())
+		msg := "参数校验失败"
+		if len(ve) >= 0 {
+			msg = ve[0].Translate(trans.Translator)
+		}
+		failWith(ctx, apperror.InvalidParameter, msg)
 	case errors.As(err, &apperror.Error{}):
 		e := err.(apperror.Error)
 		failWith(ctx, e.Code, e.Msg)

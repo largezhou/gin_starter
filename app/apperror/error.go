@@ -1,10 +1,5 @@
 package apperror
 
-import (
-	"github.com/go-playground/validator/v10"
-	"github.com/largezhou/gin_starter/app/trans"
-)
-
 type Error struct {
 	Code  int
 	Msg   string
@@ -48,16 +43,4 @@ func New(msg string) Error {
 		Msg:   msg,
 		Cause: nil,
 	}
-}
-
-// ValidationErrors 包装一下 validator.ValidationErrors
-type ValidationErrors struct {
-	E validator.ValidationErrors
-}
-
-func (ve ValidationErrors) Error() string {
-	if len(ve.E) == 0 {
-		return ""
-	}
-	return ve.E[0].Translate(trans.Translator)
 }
