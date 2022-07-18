@@ -14,4 +14,4 @@ COPY --from=builder /app/ .
 
 RUN apk update && apk add tzdata
 
-CMD ["./tmp/main"]
+ENTRYPOINT ["./tmp/main"]
