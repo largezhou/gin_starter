@@ -3,6 +3,7 @@ package middleware
 import (
 	"bytes"
 	"io/ioutil"
+	"net/http"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -25,6 +26,11 @@ func (w bodyLogWriter) Write(b []byte) (int, error) {
 // Logger 记录请求
 func Logger() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+		if ctx.Writer.Status() == http.StatusNotFound {
+			ctx.Next()
+			return
+		}
+
 		start := time.Now()
 
 		// 该类型特殊处理，因为可能有文件
