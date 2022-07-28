@@ -13,7 +13,7 @@ type User struct {
 	Uuid     string  `json:"uuid"`
 	Username string  `json:"username"`
 	Password string  `json:"-"`
-	Email    *string `json:"email"` // 可为 null 的值，用指针配合 v.V 和 v.P 辅助方法 比用 sql.NullString 方便多了
+	Email    *string `json:"email"` // 可为 null 的值，用指针配合 helper.V 和 helper.P 辅助方法 比用 sql.NullString 方便多了
 }
 
 func Create(ctx context.Context, user *User) (*User, error) {
